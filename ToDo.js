@@ -1,17 +1,25 @@
 import React, {Component} from "react";
 import {View,Text, TouchableOpacity, StyleSheet,Dimensions, TextInput} from 'react-native';
-
+import PropTypes from "prop-types";
 const {width, height }= Dimensions.get("window");
 
 export default class ToDo extends Component {
-    state = {
-        isEditing: false,
-        isCompleted: false,
-        toDoValue:""
+    constructor(props) {
+        super(props);
+        this.state= {
+            isEditing: false, 
+            toDoValue:props.text
+        };
+    }
+    static propTypes = {
+        text:PropTypes.string.isRequired,
+        isCompleted:PropTypes.bool.isRequired,
+        deleteToDo:PropTypes.func.isRequired,
+        id:PropTypes.string.isRequired 
     }
     render() {
         const {isEditing, isCompleted, toDoValue} = this.state;
-        const {text} = this.props;
+        const {text, id, deleteToDo} = this.props;
         return(
             <View style={styles.container}>
                 <View style={styles.column}>
@@ -23,8 +31,8 @@ export default class ToDo extends Component {
                     </TouchableOpacity>
                     {isEditing ? (
                     <TextInput 
-                        style={[styles.input,
-                                styles.text,
+                        style={[styles.text,
+                                styles.input,
                                 isCompleted ? styles.completedText : styles.unCompletedText]} 
                         value={toDoValue}
                         multiline={true}
@@ -57,7 +65,7 @@ export default class ToDo extends Component {
                                         <Text style={styles.actionText}>✏️</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPressOut={() => deleteToDo(id)}>
                                     <View style={styles.actionContainer}>
                                         <Text style={styles.actionText}>❌</Text>
                                     </View>
@@ -107,7 +115,6 @@ const styles = StyleSheet.create({
     column:{
         flexDirection:"row",
         alignItems:"center",
-        justifyContent:"space-between",
         width:width /2
     },
     circle: {
@@ -144,7 +151,8 @@ const styles = StyleSheet.create({
         marginHorizontal:10
     },
     input: {
-         marginVertical:20,
-         width:width/2
+         marginVertical:15,
+         width:width/2,
+         paddingBottom:5
     }
 })
