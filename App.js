@@ -38,6 +38,7 @@ export default class App extends React.Component {
             returnKeyType={"done"}
             autoCorrect={false}
             onSubmitEditing={this._addToDo}
+            underlineColorAndroid={"transparent"}
           />
           <ScrollView contentContainerStyle={styles.todos}>
             {Object.values(toDos).reverse().map(toDo => 
@@ -68,7 +69,7 @@ export default class App extends React.Component {
       const parseToDos = JSON.parse(toDos);
       this.setState({
         loadedToDos:true,
-        toDos:parseToDos
+        toDos:parseToDos || {} 
       });
     }catch(err) {
       console.log(err);

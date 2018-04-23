@@ -42,6 +42,7 @@ export default class ToDo extends Component {
                         onChangeText={this._controlInput}
                         returnKeyType={"done"}
                         onBlur={this._finishEditing}
+                        underlineColorAndroid={"transparent"}
                     />
                     ) : (
                         <Text style={[
@@ -68,7 +69,9 @@ export default class ToDo extends Component {
                                         <Text style={styles.actionText}>✏️</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPressOut={() => deleteToDo(id)}>
+                                <TouchableOpacity onPressOut={event => {
+                                    event.stopPropagation;
+                                    deleteToDo(id); }}>
                                     <View style={styles.actionContainer}>
                                         <Text style={styles.actionText}>❌</Text>
                                     </View>
@@ -80,7 +83,8 @@ export default class ToDo extends Component {
         );
     }
 
-    _toggleComplete = () => {
+    _toggleComplete = (event) => {
+        event.stopPropagation();
         const {isCompleted, uncompleteToDo, completeToDo, id} = this.props;
         if(isCompleted) {
             uncompleteToDo(id);
@@ -89,12 +93,14 @@ export default class ToDo extends Component {
         }
     }
 
-    _startEditing = () => {
+    _startEditing = (event) => {
+        event.stopPropagation();
         const {text} = this.props;
         this.setState({isEditing: true, toDoValue:text});
     };
 
-    _finishEditing = () => {
+    _finishEditing = (event) => {
+        event.stopPropagation();
         const {toDoValue} = this.state;
         const {id, updateToDo} = this.props;
         updateToDo(id, toDoValue);
