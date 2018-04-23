@@ -27,7 +27,7 @@ export default class App extends React.Component {
             autoCorrect={false}
           />
           <ScrollView contentContainerStyle={styles.todos}>
-            <ToDo />
+            <ToDo text={"hello, I'm To Do"} />
           </ScrollView>
 
         </View>
